@@ -20,7 +20,7 @@ struct GridData {
 
 class Renderer {
 public:
-  Renderer(GridData grid_data);
+  Renderer();
 
   ~Renderer() {
     glDeleteVertexArrays(1, &_VAO);
@@ -32,26 +32,31 @@ public:
   Renderer(const Renderer&) = delete;
   Renderer& operator=(const Renderer&) = delete;
 
+  /* submit new grid data to renderer */
+  void submit_grid(GridData grid_data);
+
   /* render frame based on current GridData */
-  void render(GridData grid_data, GLFWwindow*& window);
+  void render(GLFWwindow*& window);
 
 private:
-  std::tuple<std::vector<float>, std::vector<unsigned int>>
-    _generate_grid(GridData grid_data);
+
+  void _update_grid_data_texture(const GridData& grid_data);
+
+  std::tuple<std::vector<float>, std::vector<unsigned int>> _generate_grid();
 
   void _set_cell_size(int cell_size);
-  void _set_grid_size(GridData grid_data);
-  void _set_viewport_size(int width, int height);
-  void _set_viewport_size(glm::ivec2 size);
 
   Shader _shader;
 
+  int _cell_size;
   glm::ivec2 _grid_size;     /* grid width, height in cells */
   glm::ivec2 _viewport_size; /* viewport width, height in pixels */
-  int _num_cells;
-  int _cell_size;
 
-  GLuint _VAO, _VBO, _EBO;
+  int _num_cells;
+  std::vector<float> _vertices;
+  std::vector<unsigned int> _ebo_indices;
+
+  GLuint _VAO, _VBO, _EBO, _GRID_DATA_TEXTURE;
 };
 
 #endif /* ifndef RENDERER_HPP */

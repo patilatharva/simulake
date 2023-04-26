@@ -45,30 +45,29 @@ void create_glfw_contexts(GLFWwindow *&window) {
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 }
 
-void test_renderer(int argc, char **argv) {
+void test_renderer() {
   GLFWwindow *window;
   create_glfw_contexts(window);
 
-  // <<<<< test code
-  GridData test_grid_data;
-  test_grid_data.width = 320;
-  test_grid_data.height = 180;
+  GridData grid_data;
+  grid_data.width = 200;
+  grid_data.height = 150;
 
-  int test_size = test_grid_data.width * test_grid_data.height;
-  test_grid_data.cells = new Cell[test_size];
+  int test_size = grid_data.width * grid_data.height;
+  grid_data.cells = new Cell[test_size];
 
-  Renderer renderer{test_grid_data};
+  Renderer renderer{};
   std::srand(static_cast<unsigned>(std::time(nullptr)));
   for (int i = 0; i < test_size; ++i) {
-    test_grid_data.cells[i].type = std::rand() % 3;
-    test_grid_data.cells[i].mass =
+    grid_data.cells[i].type = std::rand() % 3;
+    grid_data.cells[i].mass =
         static_cast<float>(std::rand()) / (static_cast<float>(RAND_MAX / 10.0));
   }
-  // test code >>>>>
 
-  // render loop
   while (!glfwWindowShouldClose(window)) {
-    renderer.render(test_grid_data, window);
+    PROFILE_SCOPE("renderloop");
+    renderer.submit_grid(grid_data);
+    renderer.render(window);
     glfwPollEvents();
   }
 
@@ -121,6 +120,6 @@ void test_simulation() {
 
 int main(int argc, char **argv) {
   // test_simulation();
-  test_renderer(argc, argv);
+  test_renderer();
   return 0;
 }
