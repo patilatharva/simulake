@@ -3,8 +3,8 @@
 
 /* default window settings */
 #define WINDOW_TITLE  "simulake"
-#define WINDOW_DEFAULT_WIDTH  800
-#define WINDOW_DEFAULT_HEIGHT 600
+#define WINDOW_DEFAULT_WIDTH  1280
+#define WINDOW_DEFAULT_HEIGHT 720
 
 /* vertex and fragment shader locations */
 #define VERTEX_SHADER_PATH "./shaders/vertex.glsl"

@@ -51,13 +51,15 @@ void test_renderer(int argc, char **argv) {
 
   // <<<<< test code
   GridData test_grid_data;
-  test_grid_data.width = 200;
-  test_grid_data.height = 150;
-  test_grid_data.cells = new Cell[200 * 150];
+  test_grid_data.width = 320;
+  test_grid_data.height = 180;
+
+  int test_size = test_grid_data.width * test_grid_data.height;
+  test_grid_data.cells = new Cell[test_size];
 
   Renderer renderer{test_grid_data};
   std::srand(static_cast<unsigned>(std::time(nullptr)));
-  for (int i = 0; i < 200 * 150; ++i) {
+  for (int i = 0; i < test_size; ++i) {
     test_grid_data.cells[i].type = std::rand() % 3;
     test_grid_data.cells[i].mass =
         static_cast<float>(std::rand()) / (static_cast<float>(RAND_MAX / 10.0));
